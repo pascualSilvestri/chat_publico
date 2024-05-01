@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-class ChatController {
+class HomeController {
     index(req, res) {
         res.sendFile(process.cwd() + "/cliente/index.html");
     }
 }
-exports.default = ChatController;
+exports.default = HomeController;

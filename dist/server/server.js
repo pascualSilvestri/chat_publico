@@ -24,6 +24,7 @@ const Message_model_1 = __importDefault(require("../models/Message.model"));
 class MyServer {
     constructor() {
         this.apiPaths = {
+            home: '/',
             chat: "/chat",
         };
         this.app = (0, express_1.default)();

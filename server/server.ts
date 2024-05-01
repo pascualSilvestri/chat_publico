@@ -15,6 +15,7 @@ class MyServer {
   private server: any;
 
   private apiPaths = {
+    home:'/',
     chat: "/chat",
   };
 
