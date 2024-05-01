@@ -46,7 +46,7 @@ class MyServer {
     };
     this.app.use(cors(corsOptions));
     // this.app.use((req, res, next) => {
-    //     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8100'); // Reemplaza con el dominio de tu aplicación
+    //     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3001'); // Reemplaza con el dominio de tu aplicación
     //     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
     //     next();
     //   })
