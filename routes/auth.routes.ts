@@ -5,7 +5,7 @@ const router = Router();
 
 const controller: AuthController = new AuthController()
 
-router.post('/login', controller.login)
+router.post('/', controller.login)
 
 
 export default router

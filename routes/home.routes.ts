@@ -8,8 +8,6 @@ const controller: HomeController = new HomeController();
 
 router.get('/', controller.index)
 
-router.post('/login', controller.login)
-
 
 
 export default router

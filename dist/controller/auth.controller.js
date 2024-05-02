@@ -13,40 +13,29 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const bcrypt_1 = __importDefault(require("bcrypt"));
-const generateJWT_1 = __importDefault(require("../helpers/generateJWT"));
 const User_model_1 = __importDefault(require("../models/User.model"));
 class AuthController {
     login(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const { dni, password } = req.body;
-                const user = yield User_model_1.default.findOne({
-                    where: {
-                        dni
-                    },
-                });
-                if (!user) {
-                    return res.status(404).json({
-                        error: "user invalidos"
-                    });
+            const { body } = req;
+            const pass = yield body.password;
+            const user = yield User_model_1.default.findOne({
+                where: {
+                    usuario: body.usuario,
                 }
-                const validPassword = yield bcrypt_1.default.compare(password, user.password);
-                if (!validPassword) {
-                    return res.status(404).json({
-                        error: "Contraseña inválido"
-                    });
-                }
-                const token = yield (0, generateJWT_1.default)();
-                return res.json({
-                    "user": user,
-                    "token": token
+            });
+            if (!user) {
+                return res.status(400).json({
+                    message: "Usuario no encontrado"
                 });
             }
-            catch (error) {
-                return res.status(404).json({
-                    msg: `"Error al generar token " ${error}`
+            const validPassword = yield bcrypt_1.default.compare(pass, user.password);
+            if (!validPassword) {
+                return res.status(400).json({
+                    message: "Contraseña incorrecta"
                 });
             }
+            res.status(200).json(user);
         });
     }
 }

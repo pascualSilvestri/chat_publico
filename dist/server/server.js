@@ -121,10 +121,10 @@ class MyServer {
         });
     }
     routes() {
+        this.app.use(this.apiPaths.home, home_routes_1.default);
         this.app.use(this.apiPaths.chat, chat_routes_1.default);
         this.app.use(this.apiPaths.auth, auth_routes_1.default);
         this.app.use(this.apiPaths.register, register_routes_1.default);
-        this.app.use(this.apiPaths.home, home_routes_1.default);
     }
 }
 exports.default = MyServer;

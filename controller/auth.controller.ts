@@ -10,50 +10,31 @@ import User from "../models/User.model";
 class AuthController {
 
     public async login(req: Request, res: Response) {
+        const { body } = req;
 
-        try {
+        const pass = await body.password;
 
-            const { dni, password } = req.body
+        const user = await User.findOne({
+            where: {
+                usuario: body.usuario,
+            }
+        })
 
-            const user = await User.findOne({
-                where: {
-                    dni
-                },
+        if (!user) {
+            return res.status(400).json({
+                message: "Usuario no encontrado"
             });
-            
-        
-            if (!user) {
-                return res.status(404).json({
-                    error: "user invalidos"
-                })
-            }
-
-
-
-            const validPassword = await bcrypt.compare(password, user.password);
-
-
-            if (!validPassword) {
-                return res.status(404).json({
-                    error: "Contraseña inválido"
-                })
-            }
-
-            const token = await generateToken();
-
-
-
-            return res.json({
-                "user": user,
-                "token": token
-            })
-
-
-        } catch (error) {
-            return res.status(404).json({
-                msg: `"Error al generar token " ${error}`
-            })
         }
+
+        const validPassword = await bcrypt.compare(pass, user.password);
+
+        if (!validPassword) {
+            return res.status(400).json({
+                message: "Contraseña incorrecta"
+            });
+        }
+
+        res.status(200).json(user);
 
     }
 

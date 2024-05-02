@@ -124,10 +124,11 @@ class MyServer {
   }
 
   routes() {
+    this.app.use(this.apiPaths.home, homeRouter);
     this.app.use(this.apiPaths.chat, chatRouter);
     this.app.use(this.apiPaths.auth, authRouter);
     this.app.use(this.apiPaths.register, registerRouter);
-    this.app.use(this.apiPaths.home, homeRouter);
+
   }
 }
 
