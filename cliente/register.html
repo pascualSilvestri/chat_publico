@@ -43,21 +43,21 @@
         <input type="text" name="nombre" id="nombre" placeholder="Escribe tu nombre" />
         <input type="text" name="usuario" id="usuario" placeholder="Escribe tu usuario" />
         <input type="password" name="password" id="password" placeholder="Escribe tu contraseña" />
-        <input type="submit" value="Enviar" />
+        <input id="btn_submit" type="submit" value="Enviar" />
     </form>
     <script type="module">
         const nombre = document.getElementById("nombre");
         const usuario = document.getElementById("usuario");
         const password = document.getElementById("password");
-        const form = document.querySelector("form");
-        form.addEventListener("submit", async (e) => {
+        const form = document.querySelector("btn_submit");
+        form.addEventListener("click", async (e) => {
             e.preventDefault();
             const data = {
                 nombre: nombre.value,
                 usuario: usuario.value,
                 password: password.value
             };
-            const response = await fetch("http://localhost:3001/register", {
+            const response = await fetch("https://chatpublico-production.up.railway.app/register", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
