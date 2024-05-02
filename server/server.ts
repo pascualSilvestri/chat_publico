@@ -84,7 +84,7 @@ class MyServer {
           });
   
           messages.forEach((message) => {
-            this.io.emit("chat message", message.message, message.id);
+            socket.emit("chat message", message.message, message.id);
           });
 
         }catch(e){
