@@ -14,6 +14,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const chat_routes_1 = __importDefault(require("../routes/chat.routes"));
+const auth_routes_1 = __importDefault(require("../routes/auth.routes"));
+const home_routes_1 = __importDefault(require("../routes/home.routes"));
 const morgan_1 = __importDefault(require("morgan"));
 const socket_io_1 = require("socket.io");
 const node_http_1 = require("node:http");
@@ -21,11 +23,15 @@ const db_1 = __importDefault(require("../db/db"));
 const sequelize_1 = require("sequelize");
 const cors_1 = __importDefault(require("cors"));
 const Message_model_1 = __importDefault(require("../models/Message.model"));
+const register_routes_1 = __importDefault(require("../routes/register.routes"));
+const User_model_1 = __importDefault(require("../models/User.model"));
 class MyServer {
     constructor() {
         this.apiPaths = {
             home: '/',
+            register: '/register',
             chat: "/chat",
+            auth: '/login'
         };
         this.app = (0, express_1.default)();
         this.server = (0, node_http_1.createServer)(this.app);
@@ -71,8 +77,10 @@ class MyServer {
                     console.log("user disconnected");
                 });
                 socket.on("chat message", (msg) => __awaiter(this, void 0, void 0, function* () {
+                    const userId = socket.handshake.auth.user.id;
                     const message = yield Message_model_1.default.create({
-                        message: msg
+                        message: msg,
+                        userId: userId,
                     });
                     this.io.emit("chat message", msg, message.id);
                 }));
@@ -83,10 +91,15 @@ class MyServer {
                                 id: {
                                     [sequelize_1.Op.gt]: socket.handshake.auth.serverOffSet
                                 }
+                            },
+                            include: {
+                                model: User_model_1.default,
+                                as: 'user'
                             }
                         });
+                        // socket.emit("chat message", messages, messages.length-1);
                         messages.forEach((message) => {
-                            socket.emit("chat message", message.message, message.id);
+                            socket.emit("chat message", message.message, message.id, message.user);
                         });
                     }
                     catch (e) {
@@ -109,6 +122,9 @@ class MyServer {
     }
     routes() {
         this.app.use(this.apiPaths.chat, chat_routes_1.default);
+        this.app.use(this.apiPaths.auth, auth_routes_1.default);
+        this.app.use(this.apiPaths.register, register_routes_1.default);
+        this.app.use(this.apiPaths.home, home_routes_1.default);
     }
 }
 exports.default = MyServer;

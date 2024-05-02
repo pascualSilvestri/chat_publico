@@ -1,5 +1,7 @@
 import express from "express";
 import chatRouter from "../routes/chat.routes";
+import authRouter from "../routes/auth.routes";
+import homeRouter from "../routes/home.routes";
 import logger from "morgan";
 import { Server as IOServer } from "socket.io";
 import { createServer } from "node:http";
@@ -7,6 +9,8 @@ import db from "../db/db";
 import { Op } from "sequelize"; 
 import cors from "cors";
 import Message from "../models/Message.model";
+import registerRouter from "../routes/register.routes";
+import User from "../models/User.model";
 
 class MyServer {
   private app: express.Application;
@@ -16,7 +20,9 @@ class MyServer {
 
   private apiPaths = {
     home:'/',
+    register:'/register',
     chat: "/chat",
+    auth:'/login'
   };
 
   constructor() {
@@ -67,10 +73,13 @@ class MyServer {
       });
 
       socket.on("chat message", async (msg) => {
+        const userId = socket.handshake.auth.user.id;
         const message = await Message.create({
-          message: msg
+          message: msg,
+          userId: userId,
         });
-        this.io.emit("chat message", msg, message.id);
+        
+        this.io.emit("chat message", msg,  message.id);
       });
 
       if(!socket.recovered){
@@ -80,11 +89,18 @@ class MyServer {
               id: {
                 [Op.gt]: socket.handshake.auth.serverOffSet
               }
+            },
+            include:{
+              model: User,
+              as:'user'
             }
           });
+
+          
+            // socket.emit("chat message", messages, messages.length-1);
   
           messages.forEach((message) => {
-            socket.emit("chat message", message.message, message.id);
+            socket.emit("chat message", message.message, message.id, message.user);
           });
 
         }catch(e){
@@ -108,6 +124,9 @@ class MyServer {
 
   routes() {
     this.app.use(this.apiPaths.chat, chatRouter);
+    this.app.use(this.apiPaths.auth, authRouter);
+    this.app.use(this.apiPaths.register, registerRouter);
+    this.app.use(this.apiPaths.home, homeRouter);
   }
 }
 

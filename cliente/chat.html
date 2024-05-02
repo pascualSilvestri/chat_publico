@@ -12,8 +12,10 @@
      -->
     <script type="module">
       import { io } from "https://cdn.socket.io/4.3.2/socket.io.esm.min.js";
+      const user = JSON.parse(localStorage.getItem("user"));
       const socket = io({
         auth:{
+          user: user,
           serverOffSet: 0,
         }
       });
@@ -30,19 +32,28 @@
         }
       });
 
-      // socket.on("messages", (msg ) => {
+      // socket.on("chat message", (msg,serverOffSet ) => {
       //   msg.map(m => {
-      //     const li = document.createElement("li");
-      //     li.innerText = m.message;
-      //     mensaje.insertAdjacentElement('beforeend',li);
+      //     const user = m.user;
+      //     const li = `<li>
+      //         <b>${user.usuario}</b> :
+      //             ${m.message}
+      //           </li>`;
+      //     mensaje.insertAdjacentHTML('beforeend',li);
+      //     socket.auth.serverOffSet = serverOffSet;
       //   });
       // });
 
 
-      socket.on("chat message", (msg,serverOffSet) => {
-        const li = document.createElement("li");
-        li.innerText = msg;
-        mensaje.insertAdjacentElement('beforeend',li);
+      socket.on("chat message", (msg,serverOffSet,user) => {
+        // const li = document.createElement("li");
+        // li.innerText = msg;
+        const li = `<li>
+              <b>${user.usuario}</b> :
+                  ${msg}
+                </li>`;
+
+        mensaje.insertAdjacentHTML('beforeend',li);
         socket.auth.serverOffSet = serverOffSet;
       });
 

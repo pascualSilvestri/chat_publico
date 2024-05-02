@@ -8,4 +8,5 @@ const home_controller_1 = __importDefault(require("../controller/home.controller
 const router = (0, express_1.Router)();
 const controller = new home_controller_1.default();
 router.get('/', controller.index);
+router.post('/login', controller.login);
 exports.default = router;

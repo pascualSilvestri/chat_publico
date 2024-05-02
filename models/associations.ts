@@ -1,11 +1,15 @@
 import Message from "./Message.model";
+import User from "./User.model";
 
+User.hasMany(Message,{ as: 'messages', foreignKey: 'userId' } );
 
+Message.belongsTo(User, { as: 'user', foreignKey: 'userId' } );
 
 
 // Sincronizar las tablas
 const models = [
-  Message
+  User,
+  Message,
 ];
 
 // Sincroniza todos los modelos
