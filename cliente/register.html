@@ -68,8 +68,8 @@
             const user = await response.json();
             localStorage.setItem("user", JSON.stringify(user))
             console.log(user);
-            if (json.error) {
-                alert(json.error);
+            if (user.error) {
+                alert(user.error);
             } else {
                 window.location.href = "chat.html";
             }
