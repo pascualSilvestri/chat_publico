@@ -6,6 +6,7 @@
     <title>chat websolutions</title>
   </head>
   <body>
+    
     <!-- 
       http://localhost:3001/
       https://chatpublico-production.up.railway.app/
@@ -13,6 +14,11 @@
     <script type="module">
       import { io } from "https://cdn.socket.io/4.3.2/socket.io.esm.min.js";
       const user = JSON.parse(localStorage.getItem("user"));
+
+      if(!user){
+        window.location.href = "index.html";
+      }
+
       const socket = io({
         auth:{
           user: user,
