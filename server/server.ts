@@ -82,6 +82,7 @@ class MyServer {
         this.io.emit("chat message", msg,  message.id);
       });
 
+      
       if(!socket.recovered){
         try{
           const messages = await Message.findAll({
