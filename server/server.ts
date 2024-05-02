@@ -78,8 +78,23 @@ class MyServer {
           message: msg,
           userId: userId,
         });
+
+        const mensaje = await Message.findByPk(message.id,{
+          include:{
+            model: User,
+            as:'user'
+          }
+        });
+
+        let user = null;
         
-        this.io.emit("chat message", msg,  message.id);
+        if(mensaje == null){
+          user = 'anonimo';
+        }else{
+          user = mensaje.user;
+        }
+        
+        this.io.emit("chat message", msg,  message.id ,user);
       });
 
       

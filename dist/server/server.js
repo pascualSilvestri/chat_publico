@@ -82,7 +82,20 @@ class MyServer {
                         message: msg,
                         userId: userId,
                     });
-                    this.io.emit("chat message", msg, message.id);
+                    const mensaje = yield Message_model_1.default.findByPk(message.id, {
+                        include: {
+                            model: User_model_1.default,
+                            as: 'user'
+                        }
+                    });
+                    let user = null;
+                    if (mensaje == null) {
+                        user = 'anonimo';
+                    }
+                    else {
+                        user = mensaje.user;
+                    }
+                    this.io.emit("chat message", msg, message.id, user);
                 }));
                 if (!socket.recovered) {
                     try {
