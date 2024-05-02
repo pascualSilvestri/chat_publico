@@ -56,6 +56,9 @@
                 usuario: usuario.value,
                 password: password.value
             };
+
+            //https://chatpublico-production.up.railway.app
+            //http://localhost:3001
             const response = await fetch("https://chatpublico-production.up.railway.app/login", {
                 method: "POST",
                 headers: {
@@ -64,13 +67,14 @@
                 body: JSON.stringify(data)
             })
 
-            const user = await response.json();
-            localStorage.setItem("user", JSON.stringify(user))
-            console.log(user);
-            if (user.error) {
-                alert(user.error);
-            } else {
-                window.location.href = "chat.html";
+            if(response.status == 200){
+              const user = await response.json();
+
+              localStorage.setItem("user", JSON.stringify(user))
+              console.log(user);
+              window.location.href = "chat.html";
+            }else{
+              alert("Usuario o contraseña incorrectos")
             }
         });
 

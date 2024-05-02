@@ -46,15 +46,32 @@
 
 
       socket.on("chat message", (msg,serverOffSet,user) => {
-        console.log(user);
+        const li = document.createElement("li");
+        const span1 = document.createElement("span");
+        const span2 = document.createElement("span");
+        const b = document.createElement('b')
+        span1.setAttribute('id','text_mensaje');
+        span2.setAttribute('id','user_name');
+        span1.textContent = msg;
+        b.textContent = user.usuario;
+        span2.appendChild(b);
+        li.appendChild(span1);
+        li.appendChild(span2);
+        if(socket.auth.user.usuario == user.usuario){
+          span1.classList.add('odd')
+          span2.classList.add('odd')
+        }
 
-        const li = `
-                <li>
-                  <span id='text_mensaje'>${msg}</span>
-                  <span id='user_name'><b>${user.usuario}</b></span>
-                </li>`;
+        console.log();
 
-        mensaje.insertAdjacentHTML('beforeend',li);
+
+     //   const li = `
+       //         <li>
+         ///         <span id='text_mensaje'>${msg}</span>
+            //      <span id='user_name'><b>${user.usuario}</b></span>
+              //  </li>`;
+
+        mensaje.insertAdjacentElement('beforeend',li);
         socket.auth.serverOffSet = serverOffSet;
         mensaje.scrollTop = mensaje.scrollHeight;
       });
@@ -126,6 +143,16 @@
         border-radius: 30px;
         padding: 5px 10px;
         color:rgb(223, 150, 150);
+      }
+
+      .even{
+        text-align: start;
+      }
+
+      .odd{
+        text-align: end;
+        display: flex;
+        flex-direction: row-reverse;
       }
 
       #mensajes li:nth-child(even) {

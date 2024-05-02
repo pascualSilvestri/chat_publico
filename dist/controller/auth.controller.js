@@ -35,7 +35,7 @@ class AuthController {
                     message: "Contraseña incorrecta"
                 });
             }
-            res.status(200).json(user);
+            return res.status(200).json(user);
         });
     }
 }
