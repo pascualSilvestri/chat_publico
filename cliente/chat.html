@@ -64,8 +64,7 @@
         li.appendChild(span1);
         li.appendChild(span2);
         if(socket.auth.user.usuario == user.usuario){
-          span1.classList.add('odd')
-          span2.classList.add('odd')
+          li.style.alignSelf = 'flex-end';
         }
 
         console.log();
@@ -119,13 +118,13 @@
         overflow-y: scroll;
         scroll-behavior: smooth;
         padding: 10px;
+        display: flex;
+        flex-direction: column;
       }
 
       #mensajes li {
-        width: 90%;
-        min-width: 40px;
+        max-width: 60%;
         list-style: none;
-        background-color: rgb(223, 150, 150);
         border-radius: 16px;
         display: flex;
         flex-direction: column;
@@ -137,6 +136,7 @@
 
       #mensajes li span{
         width: 100%;
+        margin: 5px 0;
       }
 
       #mensajes li #user_name{
