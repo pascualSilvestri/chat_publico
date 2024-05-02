@@ -46,13 +46,12 @@
 
 
       socket.on("chat message", (msg,serverOffSet,user) => {
-        // const li = document.createElement("li");
-        // li.innerText = msg;
+        console.log(user);
+
         const li = `
                 <li>
                   <span id='text_mensaje'>${msg}</span>
                   <span id='user_name'><b>${user.usuario}</b></span>
-                  
                 </li>`;
 
         mensaje.insertAdjacentHTML('beforeend',li);
@@ -152,8 +151,10 @@
         height: 100%;
         border: none;
         border-radius: 9999px;
-        background-color: rgb(255, 204, 204);
+        background-color: rgb(253, 216, 216);
         padding: 0 20px 0 20px;
+        color:rgb(247, 146, 146);
+        font-size: 14px;
       }
 
       #send_mensaje input[type="text"]:hover {

@@ -90,7 +90,12 @@ class MyServer {
                     });
                     let user = null;
                     if (mensaje == null) {
-                        user = 'anonimo';
+                        return;
+                    }
+                    else if (!mensaje.user) {
+                        user = {
+                            usuario: 'anonymous',
+                        };
                     }
                     else {
                         user = mensaje.user;
@@ -110,9 +115,21 @@ class MyServer {
                                 as: 'user'
                             }
                         });
+                        let user = null;
                         // socket.emit("chat message", messages, messages.length-1);
                         messages.forEach((message) => {
-                            socket.emit("chat message", message.message, message.id, message.user);
+                            if (message == null) {
+                                return;
+                            }
+                            else if (!message.user) {
+                                user = {
+                                    usuario: 'anonymous',
+                                };
+                            }
+                            else {
+                                user = message.user;
+                            }
+                            socket.emit("chat message", message.message, message.id, user);
                         });
                     }
                     catch (e) {
