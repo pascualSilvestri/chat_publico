@@ -49,8 +49,8 @@
         const nombre = document.getElementById("nombre");
         const usuario = document.getElementById("usuario");
         const password = document.getElementById("password");
-        const form = document.querySelector("btn_submit");
-        form.addEventListener("click", async (e) => {
+        const form = document.querySelector("form");
+        form.addEventListener("submit", async (e) => {
             e.preventDefault();
             const data = {
                 nombre: nombre.value,
